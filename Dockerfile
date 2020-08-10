@@ -28,4 +28,4 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 EXPOSE 25899
 EXPOSE 25898
-RUN ["/usr/sbin/collectd", "-f"]
+CMD ["/usr/sbin/collectd", "-f"]
