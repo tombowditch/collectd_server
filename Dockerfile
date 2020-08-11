@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM phusion/baseimage:bionic-1.0.0
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -22,10 +22,30 @@ RUN rm -f /etc/collectd/collectd.conf
 
 ADD collectd.conf /etc/collectd/collectd.conf
 
+# do CGP stuff
+RUN apt-get install php php-cli php-json git -y --no-install-recommends
+
+RUN git clone https://github.com/pommi/CGP.git
+
+RUN mv CGP* /www
+
 # cleanup
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 
+# service setup
+
+RUN mkdir /etc/service/collectd
+RUN mkdir /etc/service/cgp
+
+COPY services/collectd /etc/service/collectd/run
+COPY services/cgp /etc/service/cgp/run
+
+RUN chmod +x /etc/service/collectd/run
+RUN chmod +x /etc/service/cgp/run
+
 EXPOSE 25899
 EXPOSE 25898
-CMD ["/usr/sbin/collectd", "-f"]
+EXPOSE 80
+
+CMD ["/sbin/my_init"]
