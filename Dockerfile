@@ -23,7 +23,7 @@ RUN rm -f /etc/collectd/collectd.conf
 ADD collectd.conf /etc/collectd/collectd.conf
 
 # do CGP stuff
-RUN apt-get install php php-cli php-json git -y --no-install-recommends
+RUN apt-get install php php-cli php-json git rrdtool -y --no-install-recommends
 
 RUN git clone https://github.com/pommi/CGP.git
 
